@@ -62,7 +62,7 @@
     <h3>Range Selector</h3>
 
     <form name="_form4">
-      <a ez-datetime-control ng-model="form.date4Range" from="form.date4RangeFrom" to="form.date4RangeTo" config="config1" />
+      <a ez-datetime-pop-control ng-model="form.date4Range" from="form.date4RangeFrom" to="form.date4RangeTo" config="config1" />
         {{ (form.date4Range.from | ezDate:'YYYY/MM/DD HH:mm')|| 'Start Date' }} - {{ (form.date4Range.to | ezDate:'YYYY/MM/DD HH:mm') || 'End Date' }}
       </a>
     </form>
