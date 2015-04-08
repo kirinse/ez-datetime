@@ -1,4 +1,4 @@
-var app = angular.module('myApp', ['ez.datetime', 'ez.modal', 'ez.dropdown']);
+var app = angular.module('myApp', ['ez.datetime','ui.bootstrap']);
 
 app.controller('myCtrl', function($scope) {
   $scope.form = {
@@ -6,7 +6,7 @@ app.controller('myCtrl', function($scope) {
   };
 
   $scope.config1 = {
-    format: 'MMMM Do YYYY, h:mma',
+    format: 'YYYY/MM/DD HH:mm',
     ranges: {
        'Today': [moment(), moment()],
        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -19,7 +19,12 @@ app.controller('myCtrl', function($scope) {
   };
 
   $scope.config2 = {
-    format: 'MMMM Do YYYY, h:mma'
+    format: 'YYYY/MM/DD HH:mm',
+		okBtnText: 'FINE',
+		minuteStep: 10,
+		meridiemEnabled: false,
+		hourFormat: 'HH',
+		minuteFormat: 'mm'
   };
 
   $scope.$watch('form', function(newVal) {

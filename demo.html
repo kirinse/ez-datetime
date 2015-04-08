@@ -7,23 +7,18 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/css/bootstrap.css" rel="stylesheet"/>
-    <link href="https://rawgit.com/jdewit/ez-dropdown/master/dist/ez-dropdown.min.css" rel="stylesheet"/>
 
     <link href="demo/style.css" rel="stylesheet"/>
 
     <link href="dist/ez-datetime.css" rel="stylesheet"/>
 
 
-		<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.js"></script>
 
-    <script src="https://rawgit.com/jdewit/ez-transition/master/dist/ez-transition.min.js"></script>
 
-    <script src="https://rawgit.com/jdewit/ez-modal/master/dist/ez-modal.min.js"></script>
-    <script src="https://rawgit.com/jdewit/ez-modal/master/dist/ez-modal-tpl.min.js"></script>
 
-    <script src="https://rawgit.com/jdewit/ez-dropdown/master/dist/ez-dropdown.min.js"></script>
+    <script src="ui-bootstrap-tpls-0.12.1.js"></script>
 
 		<script src="dist/ez-datetime.js"></script>
 		<script src="dist/ez-datetime-tpl.js"></script>
@@ -39,9 +34,9 @@
   <div ng-controller="myCtrl" class="col-lg-6 col-md-6">
     <h3>Button Control</h3>
 
-    <a class="btn btn-default" ez-datetime-control ng-model="form.date1" config="config1">
+    <a class="btn btn-default" ez-datetime-control ng-model="form.date1" config="config2">
       <i class="glyphicon glyphicon-calendar"></i>
-      {{ form.date1 ? (form.date1 | ezDate:'MMMM Do, YYYY [at] h:mma') : 'Pick a Date' }}
+      {{ form.date1 ? (form.date1 | ezDate:'YYYY/MM/DD HH:mm') : 'Pick a Date' }}
     </a>
 
     <a ng-if="!!form.date1" ng-click="form.date1 = null">- clear</a>
@@ -54,9 +49,9 @@
 
     <form name="_form">
       <div class="input-group">
-        <input class="form-control" ez-datetime-control type="text" ng-model="form.date3" view-format="YYYY-MM-DD h:mma" />
+        <input class="form-control" ez-datetime-control type="text" ng-model="form.date3" view-format="YYYY/MM/DD HH:mm" />
         <div class="input-group-addon">
-          <a ez-datetime-control ng-model="form.date3" view-format="YYYY-MM-DD h:mma">
+          <a ez-datetime-control ng-model="form.date3" view-format="YYYY/MM/DD HH:mm">
             <i class="glyphicon glyphicon-calendar"></i>
           </a>
         </div>
@@ -67,8 +62,8 @@
     <h3>Range Selector</h3>
 
     <form name="_form4">
-      <a ez-datetime-control ng-model="form.date4Range" from="form.date4RangeFrom" to="form.date4RangeTo" />
-        {{ (form.date4Range.from | ezDate:'MMM Do, YYYY [at] h:mma')|| 'Start Date' }} - {{ (form.date4Range.to | ezDate:'MMM Do, YYYY [at] h:mma') || 'End Date' }}
+      <a ez-datetime-control ng-model="form.date4Range" from="form.date4RangeFrom" to="form.date4RangeTo" config="config1" />
+        {{ (form.date4Range.from | ezDate:'YYYY/MM/DD HH:mm')|| 'Start Date' }} - {{ (form.date4Range.to | ezDate:'YYYY/MM/DD HH:mm') || 'End Date' }}
       </a>
     </form>
     Form Dirty State => {{ _form4.$dirty }}
