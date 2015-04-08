@@ -4,7 +4,12 @@ app.controller('myCtrl', function($scope) {
   $scope.form = {
     //date3: moment().format()
   };
-
+	$scope.opened = false;
+  $scope.open = function($event) {
+    $event.preventDefault();
+    $event.stopPropagation();
+    $scope.opened = true;
+  };
   $scope.config1 = {
     format: 'YYYY/MM/DD HH:mm',
     ranges: {
@@ -28,8 +33,8 @@ app.controller('myCtrl', function($scope) {
   };
 
   $scope.$watch('form', function(newVal) {
-    console.log('form changed');
-    console.log(newVal);
+    // console.log('form changed');
+    // console.log(newVal);
   }, true);
 
   $scope.clear = function(property) {
