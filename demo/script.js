@@ -27,9 +27,11 @@ app.controller('myCtrl', function($scope) {
     format: 'YYYY/MM/DD HH:mm',
 		okBtnText: 'FINE',
 		minuteStep: 10,
-		meridiemEnabled: false,
+		meridiemEnabled: true,
 		hourFormat: 'HH',
-		minuteFormat: 'mm'
+		minuteFormat: 'mm',
+		modelFormat: 'YYYY/MM/DD HH:mm',
+		timepickerEnabled: true
   };
 
   $scope.$watch('form', function(newVal) {

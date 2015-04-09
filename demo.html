@@ -7,6 +7,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
+		<link href="bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
 
     <link href="demo/style.css" rel="stylesheet"/>
 
@@ -62,7 +63,7 @@
     <h3>Range Selector</h3>
 
     <form name="_form4">
-      <a ez-datetime-popup-control is-open="opened" ng-model="form.date4Range" from="form.date4RangeFrom" to="form.date4RangeTo" config="config1" ng-click="open($event)" />
+      <a ez-datetime-popup-control ng-model="form.date4Range" from="form.date4RangeFrom" to="form.date4RangeTo" config="config2">
         {{ (form.date4Range.from | ezDate:'YYYY/MM/DD HH:mm')|| 'Start Date' }} - {{ (form.date4Range.to | ezDate:'YYYY/MM/DD HH:mm') || 'End Date' }}
       </a>
     </form>

@@ -514,6 +514,9 @@ angular.module('ez.datetime').directive('ezDatetimeControl', [
 ]);
 
 
+/**
+ * @TODO: will using dropdown-menu to implement
+ **/
 angular.module('ez.datetime')
 .directive('ezDatetimePopupWrap', function() {
   return {
@@ -530,24 +533,16 @@ angular.module('ez.datetime')
   };
 })
 .directive('ezDatetimePopupControl', [
-	'$compile',
-	'$parse',
-	'$document',
-	'$position',
   'EzDatetimeConfigService',
   function(
-		$compile,
-		$parse,
-		$document,
-		$position,
     ConfigService
   ) {
     return {
       restrict: 'EA',
       require: 'ngModel',
-			// templateUrl: 'ez_datetime_range_popup.html',
+			replace: true,
+			templateUrl: 'popup.html',
       scope: {
-				isOpen: '=',
         ngModel: '=',
         from: '=?',
         to: '=?',
@@ -555,17 +550,19 @@ angular.module('ez.datetime')
       },
       link: function(scope, $element, attrs, ngModel) {
         var rangeEnabled = false;
-
         scope.form = {};
-
-        $element.addClass('ez-datetime-control');
-
         ConfigService.resolve(scope, attrs);
-
         if (!!attrs.from && !!attrs.to) {
           rangeEnabled = true;
         }
-
+				angular.element($element.find('a')[0]).bind('click',function(evt){
+					console.log(evt);
+					$element.toggleClass('open');
+				});
+				scope.ok = function(){
+					// $event.stopPropagation();
+					console.log(ngModel);
+				};
         ngModel.$formatters.push(function(v) {
           if (v) {
             if (rangeEnabled && scope.options.modelBinding === 'default') {
@@ -574,61 +571,33 @@ angular.module('ez.datetime')
               v = moment(v).format(scope.options.viewFormat);
             }
           }
-
           return v;
         });
-				
-	      scope.$watch('isOpen', function(value) {
-	        if (value) {
-	          scope.$broadcast('datepicker.focus');
-	          scope.position = $position.position($element);
-	          scope.position.top = scope.position.top + $element.prop('offsetHeight');
+				scope.form.date = ngModel.$modelValue;
+        if (!!scope.form.date) {
+          if (!!scope.form.date.from) {
+            scope.form.from = scope.form.date.from;
+          }
 
-	          // $document.bind('click', documentClickBind);
-	        } else {
-	          // $document.unbind('click', documentClickBind);
-	        }
-	      });
-				
-	      var popupEl = angular.element('<div ez-datetime-popup-wrap><div>aaaaaa</div></div>');
-	      var $popup = $compile(popupEl)(scope);
-	      // Prevent jQuery cache memory leak (template is now redundant after linking)
-	      popupEl.remove();
-        $element.after($popup);
-				console.log(attrs);
-        // $element.bind('click', function() {
-        //
-        //   scope.form.date = ngModel.$modelValue;
-        //
-        //   // try to init from ngModel value first
-        //   if (!!scope.form.date) {
-        //     if (!!scope.form.date.from) {
-        //       scope.form.from = scope.form.date.from;
-        //     }
-        //
-        //     if (!!scope.form.date.to) {
-        //       scope.form.to = scope.form.date.to;
-        //     }
-        //   }
-        //
-        //   // try to init from from/to scope attributes
-        //   //
-        //   scope.form.from = scope.from;
-        //   scope.form.to = scope.to;
-        //
-        //   scope.form.isFrom = !!attrs.to && !!scope.form.to;
-        //   scope.form.isTo = !!attrs.from && !!scope.form.from;
-        //
-        //   if (!scope.form.from && !scope.from) {
-        //     scope.form.from = moment().format(scope.options.modelFormat);
-        //   }
-        //
-        //   if (!scope.form.to && !scope.to) {
-        //     scope.form.to = moment().format(scope.options.modelFormat);
-        //   }
-        //
-        // });
+          if (!!scope.form.date.to) {
+            scope.form.to = scope.form.date.to;
+          }
+        }
+        scope.form.from = scope.from;
+        scope.form.to = scope.to;
 
+        scope.form.isFrom = !!attrs.to && !!scope.form.to;
+        scope.form.isTo = !!attrs.from && !!scope.form.from;
+
+        if (!scope.form.from && !scope.from) {
+          scope.form.from = moment().startOf('day').format(scope.options.modelFormat);
+        }
+
+        if (!scope.form.to && !scope.to) {
+          scope.form.to = moment().endOf('day').format(scope.options.modelFormat);
+        }
+				scope.text = scope.form.from + ' - ' + scope.form.to;
+				// console.log(scope.form.from);
       }
     };
   }
