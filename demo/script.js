@@ -1,15 +1,6 @@
 var app = angular.module('myApp', ['ez.datetime','ui.bootstrap']);
 
 app.controller('myCtrl', function($scope) {
-  $scope.form = {
-    //date3: moment().format()
-  };
-	$scope.opened = false;
-  $scope.open = function($event) {
-    $event.preventDefault();
-    $event.stopPropagation();
-    $scope.opened = true;
-  };
   $scope.config1 = {
     format: 'YYYY/MM/DD HH:mm',
     ranges: {
@@ -31,12 +22,21 @@ app.controller('myCtrl', function($scope) {
 		hourFormat: 'HH',
 		minuteFormat: 'mm',
 		modelFormat: 'YYYY/MM/DD HH:mm',
+		viewFormat: 'YYYY/MM/DD HH:mm',
 		timepickerEnabled: true
+  };
+  $scope.form = {
+    //date3: moment().format()
+		// date4Range: {from:moment().startOf('day'),to:moment().endOf('day')}
+		date4RangeFrom: moment().subtract(1, 'days').startOf('day').format($scope.config2.modelFormat), 
+		date4RangeTo: moment().subtract(1, 'days').endOf('day').format($scope.config2.modelFormat),
+		date5RangeFrom: moment().subtract(1, 'days').startOf('day').format($scope.config2.modelFormat), 
+		date5RangeTo: moment().subtract(1, 'days').endOf('day').format($scope.config2.modelFormat)
   };
 
   $scope.$watch('form', function(newVal) {
     // console.log('form changed');
-    // console.log(newVal);
+    console.log(newVal);
   }, true);
 
   $scope.clear = function(property) {

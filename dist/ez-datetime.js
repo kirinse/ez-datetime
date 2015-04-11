@@ -544,25 +544,17 @@ angular.module('ez.datetime')
 			templateUrl: 'popup.html',
       scope: {
         ngModel: '=',
-        from: '=?',
-        to: '=?',
-        config: '=?'
+        from: '=',
+        to: '=',
+        config: '='
       },
-      link: function(scope, $element, attrs, ngModel) {
+      link: function(scope, element, attrs, ngModel) {
         var rangeEnabled = false;
         scope.form = {};
         ConfigService.resolve(scope, attrs);
         if (!!attrs.from && !!attrs.to) {
           rangeEnabled = true;
         }
-				angular.element($element.find('a')[0]).bind('click',function(evt){
-					console.log(evt);
-					$element.toggleClass('open');
-				});
-				scope.ok = function(){
-					// $event.stopPropagation();
-					console.log(ngModel);
-				};
         ngModel.$formatters.push(function(v) {
           if (v) {
             if (rangeEnabled && scope.options.modelBinding === 'default') {
@@ -573,31 +565,54 @@ angular.module('ez.datetime')
           }
           return v;
         });
-				scope.form.date = ngModel.$modelValue;
-        if (!!scope.form.date) {
-          if (!!scope.form.date.from) {
-            scope.form.from = scope.form.date.from;
-          }
+				angular.element(element.find('a')[0]).bind('click',function(evt){
+					var opened = element.hasClass('open');
+					if(!opened) {
+						console.log(ngModel.$viewValue);
+						scope.form.date = ngModel.$modelValue;
+	          // try to init from ngModel value first
+		        if (!!scope.form.date) {
+		          if (!!scope.form.date.from) {
+		            scope.form.from = scope.form.date.from;
+		          }
 
-          if (!!scope.form.date.to) {
-            scope.form.to = scope.form.date.to;
-          }
-        }
-        scope.form.from = scope.from;
-        scope.form.to = scope.to;
+		          if (!!scope.form.date.to) {
+		            scope.form.to = scope.form.date.to;
+		          }
+		        }
+	          // try to init from from/to scope attributes
+	          //
+	          scope.form.from = scope.from;
+	          scope.form.to = scope.to;
 
-        scope.form.isFrom = !!attrs.to && !!scope.form.to;
-        scope.form.isTo = !!attrs.from && !!scope.form.from;
+	          scope.form.isFrom = !!attrs.to && !!scope.form.to;
+	          scope.form.isTo = !!attrs.from && !!scope.form.from;
 
-        if (!scope.form.from && !scope.from) {
-          scope.form.from = moment().startOf('day').format(scope.options.modelFormat);
-        }
+	          if (!scope.form.from && !scope.from) {
+	            scope.form.from = moment().startOf('day').format(scope.options.modelFormat);
+	          }
 
-        if (!scope.form.to && !scope.to) {
-          scope.form.to = moment().endOf('day').format(scope.options.modelFormat);
-        }
-				scope.text = scope.form.from + ' - ' + scope.form.to;
-				// console.log(scope.form.from);
+	          if (!scope.form.to && !scope.to) {
+	            scope.form.to = moment().endOf('day').format(scope.options.modelFormat);
+	          }
+            scope.from = scope.form.from;
+            scope.to = scope.form.to;
+						ngModel.$setViewValue({from:scope.form.from,to:scope.form.to});
+						ngModel.$render();
+						element.addClass('open');
+					}
+					else {
+						element.removeClass('open');
+					}
+				});
+				scope.ok = function(){
+					// var v = {};
+					// v.from = scope.from = scope.form.from;
+					// v.to = scope.to = scope.form.to;
+					ngModel.$setViewValue({from:scope.form.from,to:scope.form.to});
+					ngModel.$render();
+					console.log(scope);
+				};
       }
     };
   }
